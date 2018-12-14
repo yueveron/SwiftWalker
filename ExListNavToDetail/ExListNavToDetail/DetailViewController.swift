@@ -76,7 +76,7 @@ class DetailViewController: UIViewController {
         let introDetailPosY = getUIItemPosY(uiItem: introTitleLabel)
         //Call this function
         let height = heightForUILabelView(text: itemData["intro"] ?? "", font: UIFont.systemFont(ofSize: 17), width: pageWidth-40)
-        print(height)
+//        print(height)
         let introDetailLabel = UILabel(frame: CGRect(x: 20, y: introDetailPosY, width: pageWidth-40, height: height))
         introDetailLabel.textAlignment = .left
         introDetailLabel.textColor = UIColor .black
@@ -90,7 +90,7 @@ class DetailViewController: UIViewController {
         
         //设置  UIScrollView 的 contentSize : (width:注意设置为 ScreenWidth, height: 所有 subView's height 累加)
         myScrollView.contentSize = getUIScrollViewContentSize()
-        print(myScrollView.contentSize)
+//        print(myScrollView.contentSize)
         
     }
     

@@ -10,8 +10,8 @@
 		867E8AB621AFC5B5008B1F4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867E8AB521AFC5B5008B1F4C /* AppDelegate.swift */; };
 		867E8AB821AFC5B5008B1F4C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867E8AB721AFC5B5008B1F4C /* MainViewController.swift */; };
 		867E8ABD21AFC5B6008B1F4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 867E8ABC21AFC5B6008B1F4C /* Assets.xcassets */; };
-		867E8AC021AFC5B6008B1F4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 867E8ABE21AFC5B6008B1F4C /* LaunchScreen.storyboard */; };
 		867E8AC821AFC757008B1F4C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867E8AC721AFC757008B1F4C /* DetailViewController.swift */; };
+		86BF8E6921B1181700A42A9B /* Data.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 86BF8E6821B1181700A42A9B /* Data.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,9 +19,9 @@
 		867E8AB521AFC5B5008B1F4C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		867E8AB721AFC5B5008B1F4C /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		867E8ABC21AFC5B6008B1F4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		867E8ABF21AFC5B6008B1F4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		867E8AC121AFC5B6008B1F4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		867E8AC721AFC757008B1F4C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		86BF8E6821B1181700A42A9B /* Data.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Data.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,11 +54,11 @@
 		867E8AB421AFC5B5008B1F4C /* ExListNavToDetail */ = {
 			isa = PBXGroup;
 			children = (
+				86BF8E6821B1181700A42A9B /* Data.bundle */,
 				867E8AB521AFC5B5008B1F4C /* AppDelegate.swift */,
 				867E8AB721AFC5B5008B1F4C /* MainViewController.swift */,
 				867E8AC721AFC757008B1F4C /* DetailViewController.swift */,
 				867E8ABC21AFC5B6008B1F4C /* Assets.xcassets */,
-				867E8ABE21AFC5B6008B1F4C /* LaunchScreen.storyboard */,
 				867E8AC121AFC5B6008B1F4C /* Info.plist */,
 			);
 			path = ExListNavToDetail;
@@ -122,7 +122,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				867E8AC021AFC5B6008B1F4C /* LaunchScreen.storyboard in Resources */,
+				86BF8E6921B1181700A42A9B /* Data.bundle in Resources */,
 				867E8ABD21AFC5B6008B1F4C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,17 +141,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		867E8ABE21AFC5B6008B1F4C /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				867E8ABF21AFC5B6008B1F4C /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		867E8AC221AFC5B6008B1F4C /* Debug */ = {
@@ -274,9 +263,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = MyLaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 84F4DU57KT;
 				INFOPLIST_FILE = ExListNavToDetail/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -284,7 +275,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.crosss.ExListNavToDetail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -292,9 +283,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = MyLaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 84F4DU57KT;
 				INFOPLIST_FILE = ExListNavToDetail/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,7 +295,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.crosss.ExListNavToDetail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

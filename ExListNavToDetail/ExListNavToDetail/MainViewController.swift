@@ -9,6 +9,7 @@
 import UIKit
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    /*
     var info = [
         ["萨内","京东安"],
         ["马内","萨拉赫","菲尔米诺"]
@@ -25,12 +26,16 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             ["name":"菲尔米诺","image":"liv_2.jpg", "intro":"他总能够在比赛中保持轻松的心态，他的跑位以及把握机会能力都非常棒。\n\n他是一名非典型的巴西球员，他严格遵守纪律，有着巨大的自信心。当有人对他犯规时，他不会抱怨。他不是一个演员，只会站起来再投入战斗。"]
         ]
     ]
+     */
+    
+    //定义二维数组,元素类型为 Dictionary<String, AnyObject>
+    var jsonInfoDictionary = [[Dictionary<String, AnyObject>]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        for item in infoDictionary{
-//            print(item)
-//        }
+        //
+        initJsonData()
+        //
         let fullScreenSize = UIScreen.main.bounds
         //
         self.title = "首页"
@@ -38,8 +43,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         //
         self.view.backgroundColor = UIColor.white
-//        let rect = self.view.frame®
-//        print(rect)
         //
         let myTableView = UITableView(frame: CGRect(x: 0, y: 0, width: fullScreenSize.width, height: fullScreenSize.height-64), style: .grouped)
         myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -61,17 +64,48 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         myTableView.allowsMultipleSelection = false
         
         self.view.addSubview(myTableView)
+        
+        
+    }
+    
+    func initJsonData(){
+        //data 已经是 Dictionary 数据类型
+        let data:Dictionary<String, AnyObject> = getJsonData()
+        //all-sections
+        jsonInfoDictionary = data["sections"] as! [[Dictionary<String, AnyObject>]]
+    }
+    
+    
+    //Dictionary<String, AnyObject> : 表示 key 是 String 类型，value 是 AnyObject, JSON必须使用是 AnyObjec
+    func getJsonData() -> Dictionary<String, AnyObject> {
+        var jsonData = Dictionary<String, AnyObject>()
+        //Read JsonFile From bundle
+        if let url = Bundle.main.url(forResource: "Data", withExtension: "bundle"), let bundle = Bundle(url: url) {
+            if let path = bundle.path(forResource: "prj_data", ofType: "json"){
+                do {
+                    let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                    let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                    //jsonResult 转换为 Dictionary<String, AnyObject>
+                    if let jsonResult = jsonResult as? Dictionary<String, AnyObject>{
+                        jsonData = jsonResult
+                    }
+                } catch {
+                }
+            }
+        }else{
+            print("Invalid filename/path.")
+        }
+        return jsonData
     }
     
     //协议：有几组 section
     func numberOfSections(in tableView: UITableView) -> Int {
-        print(infoDictionary.count)
-        return infoDictionary.count
+        return jsonInfoDictionary.count
     }
     
     //协议：每一组有几个 cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return infoDictionary[section].count
+        return jsonInfoDictionary[section].count
     }
     
     //协议：每个 cell 显示的内容
@@ -80,23 +114,26 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
         //
         if let myLabel = cell.textLabel {
-//            let playerName = "\(infoDictionary[indexPath.section][indexPath.row][])"
-            let playerName = "\(infoDictionary[indexPath.section][indexPath.row]["name"] ?? "")"
+            //each of section
+            let section = jsonInfoDictionary[indexPath.section]
+            //item inner each section
+            let itemData = section[indexPath.row]
+            let playerName = itemData["name"] as! String
             myLabel.text = playerName
         }
-        
         return cell
     }
     
     //协议：点选 cell 后执行的动作
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        //
-        let itemData = infoDictionary[indexPath.section][indexPath.row]
-//        print("选择的是\(name)")
+        //each of section
+        let section = jsonInfoDictionary[indexPath.section]
+        //item inner each section
+        let itemData = section[indexPath.row]
         //
         let detailViewController = DetailViewController()
-        detailViewController.itemData = itemData
+        detailViewController.itemData = itemData as! [String : String] 
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     

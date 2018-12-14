@@ -1,0 +1,34 @@
+{
+    "prjname": "Project name",
+    "sections": [
+        [
+            {
+                "name":"京东安",
+                "image":"man_0.jpg",
+                "intro":"伊尔卡伊·京多安"
+            },
+            {
+                "name":"萨内",
+                "image":"man_1.jpg",
+                "intro":"萨内在2016年8月加盟曼城"
+            }
+        ],
+        [
+            {
+                "name":"京东安1",
+                "image":"man_0.jpg",
+                "intro":"伊尔卡伊·京多安"
+            },
+            {
+                "name":"京东安1",
+                "image":"man_0.jpg",
+                "intro":"伊尔卡伊·京多安"
+            },
+            {
+                "name":"萨内1",
+                "image":"man_1.jpg",
+                "intro":"萨内在2016年8月加盟曼城"
+            }
+        ]
+    ]
+}

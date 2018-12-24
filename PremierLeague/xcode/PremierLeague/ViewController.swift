@@ -22,6 +22,11 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
     let IMAGE_RATIO : CGFloat = 0.5
     //轮播片集合
     var carouselImages = ["B_Silver_Player", "Sane_Player", "Gdongan_Player", "D_Silver_Player"]
+    //CityData
+    var cityDatas = [Dictionary<String, String>]()
+    
+    //
+    let listTeamsDeatilData : Array<Dictionary<String, AnyObject>> = ProjectData.getAllTeamsDetailData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +36,7 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
         self.view.backgroundColor = UtilTools.hexStringToUIColor(hex: "#F7F8FA") // hexStringToUIColor(hex: "#F7F8FA")
         //
         pageUIScrollView = UIScrollView()
-        pageUIScrollView.frame = CGRect(x: 0, y: 0, width: stage.width, height: stage.height-84)
+        pageUIScrollView.frame = CGRect(x: 0, y: 0, width: stage.width, height: stage.height-120)
         pageUIScrollView.isScrollEnabled = true
         self.view.addSubview(pageUIScrollView);
         //
@@ -61,6 +66,9 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
         cityTitleLabel.text = "英伦城市"
         pageUIScrollView.addSubview(cityTitleLabel)
         //
+        let yCityCV = getUIItemPosY(uiItem: cityTitleLabel) + 10
+        setupCityCollectionView(initPosY: yCityCV)
+        //
         pageUIScrollView.contentSize = getUIScrollViewContentSize()
         
         // UIButton
@@ -69,17 +77,51 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
 //        self.view.addSubview(myButtonPlayer)
     }
    
+    func setupCityCollectionView(initPosY:CGFloat){
+        cityDatas = [
+            ["name":"伦敦", "image":"city_london","index":"0"],
+            ["name":"曼切斯特", "image":"city_manchester","index":"1"],
+            ["name":"利物浦", "image":"city_liverpool","index":"2"],
+            ["name":"莱斯特", "image":"city_leicester","index":"3"]
+        ]
+        //定义呈现的样式
+        let layout = UICollectionViewFlowLayout()
+        let ratio:CGFloat = PADDING
+        //设置滚动方向
+        layout.scrollDirection = .horizontal
+        //设置每一个 cell 与其他 cell 的间距
+        layout.sectionInset = UIEdgeInsets(top: 0, left: ratio, bottom: 0, right: ratio)
+        layout.minimumLineSpacing = ratio
+        //设置 cell size
+        let sizeW = CGFloat(stage.width*0.5-ratio*2)
+        layout.itemSize = CGSize(width: sizeW, height: sizeW)
+        
+        //创建 UICollectionView 实例
+        let myCollectionView = UICollectionView(frame: CGRect(x:0, y: initPosY, width: stage.width, height: sizeW), collectionViewLayout: layout)
+        //Set UICollectionView Background-Color
+        myCollectionView.backgroundColor = UtilTools.hexStringToUIColor(hex: "#F7F8FA")
+        myCollectionView.showsHorizontalScrollIndicator = false
+        
+        //注册 cell 已供后续使用
+        myCollectionView.register(CityCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        
+        //设置代理
+        myCollectionView.delegate = self
+        myCollectionView.dataSource = self
+        //
+        pageUIScrollView.addSubview(myCollectionView)
+    }
     
     func setTeamsButtons(initPosY:CGFloat) -> CGFloat{
 //        print("set Teams Buttons")
 //        let arrImages = ["team_spur", "team_manc", "team_arsnel", "team_manu", "team_liverpool", "team_chelse"]
         let arrTeams:Array<Dictionary<String, String>> = [
-            ["image":"team_spur", "title":"热刺"],
-            ["image":"team_manc", "title":"曼城"],
-            ["image":"team_arsnel", "title":"阿森纳"],
-            ["image":"team_manu", "title":"曼联"],
-            ["image":"team_liverpool", "title":"利物浦"],
-            ["image":"team_chelse", "title":"切尔西"]
+            ["image":"team_spur", "title":"热刺", "index":"0"],
+            ["image":"team_manc", "title":"曼城", "index":"1"],
+            ["image":"team_arsnel", "title":"阿森纳", "index":"2"],
+            ["image":"team_manu", "title":"曼联", "index":"3"],
+            ["image":"team_liverpool", "title":"利物浦", "index":"4"],
+            ["image":"team_chelse", "title":"切尔西", "index":"5"]
         ]
         let arrLength = arrTeams.count
         let buttonWidth:CGFloat = 75
@@ -122,7 +164,7 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
             button.set(image: image, attributedTitle: title, at: .bottom, width: 15.0, state: .normal)
             //
             button.addTarget(self, action: #selector(clkToTeam(_:)), for: .touchUpInside)
-            button.tag = index    //* 传参，只能传一个
+            button.tag = Int(arrTeams[index]["index"] ?? "0")!   //* 传参，只能传一个
             //
             buttonGroupView.addSubview(button)
         }
@@ -170,6 +212,7 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         //
+        self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
@@ -191,10 +234,11 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
     
     //* Button Click Function
     @objc func clkToTeam(_ button: UIButton) {
-//        let tag = button.tag
+        var index:Int = button.tag
+        if index>1 {index=1}
         let teamDetailViewController = TeamDetailViewController()
-        //传参给 articleViewController
-//        teamDetailViewController.passInfo = "首页"
+        //传参给 push-ViewController
+        teamDetailViewController.teamDatas = listTeamsDeatilData[index]
         //
         self.navigationController?.pushViewController(teamDetailViewController, animated: true)
         //显示导航栏
@@ -222,12 +266,47 @@ class ViewController: UIViewController, SliderGalleryControllerDelegate {
     @objc func handleTapAction(_ tap:UITapGestureRecognizer)->Void{
         //获取图片索引值
         let index = sliderGallery.currentIndex
+        let playerDatas : [Dictionary<String, String>] = [
+            ["name":"贝尔纳多·席尔瓦", "url":"http://cn.mancity.com/teams/profile/bernardo-silva"],
+            ["name":"萨内", "url":"http://cn.mancity.com/teams/profile/leroy-sane"],
+            ["name":"京东安","url":"http://cn.mancity.com/teams/profile/ilkay-gundogan"],
+            ["name":"大卫·席尔瓦","url":"http://cn.mancity.com/teams/profile/david-silva"]
+        ]
+        //
+        let playerDetailViewController = PlayerDetailViewController()
+        let itemData:Dictionary<String, String> = playerDatas[index]
+        playerDetailViewController.playerUrl = itemData["url"]!
+        self.navigationController?.pushViewController(playerDetailViewController, animated: true)
         //弹出索引信息
-        let alertController = UIAlertController(title: "您点击的图片索引是：", message: "\(index)", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "确定", style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true, completion: nil)
+//        let alertController = UIAlertController(title: "您点击的图片索引是：", message: "\(index)", preferredStyle: .alert)
+//        let cancelAction = UIAlertAction(title: "确定", style: .cancel, handler: nil)
+//        alertController.addAction(cancelAction)
+//        self.present(alertController, animated: true, completion: nil)
     }
     
 }
 
+extension ViewController : UICollectionViewDataSource{
+    //每一个 section 内 cell 的个数
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return cityDatas.count
+    }
+    
+    //每个 cell 要显示的内容
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"Cell", for: indexPath) as! CityCollectionViewCell
+        //
+        let itemData:Dictionary<String, String> = cityDatas[indexPath.item]
+        cell.setValueToCell(item: itemData)
+        return cell
+    }
+}
+
+extension ViewController : UICollectionViewDelegate {
+    //协议：点选 cell 后执行的动作
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        print("click:\(indexPath.row)")
+    }
+    
+}

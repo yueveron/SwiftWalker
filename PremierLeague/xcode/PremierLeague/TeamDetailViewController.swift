@@ -10,8 +10,20 @@ class TeamDetailViewController: UIViewController {
     var pageUIScrollView : UIScrollView!
     var playerTableView : UITableView!
     //
+    var teamDatas:Dictionary<String, AnyObject> = [
+        "bannerImage":"banner_manc" as AnyObject,
+        "logoImage":"logo_manc" as AnyObject,
+        "name":"Manchester City" as AnyObject,
+        "intro":"曼彻斯特城足球俱乐部是一间位于曼彻斯特的足球俱乐部，前身为成立于1880年的“圣马可的西戈登”的足球队，1894年改名为“曼城”，目前于英格兰超级联赛比赛。球队主场为阿提哈德球场。\n\n2011/12赛季，曼城拿得英超赛冠奖，时隔44年终于重新获得英格兰顶级联赛冠军，2013/14赛季时隔一年后再度重夺英格兰顶级联赛冠军及联赛杯冠军成为“双冠王”。2017/18年度赛季，曼城第三次夺得英超冠军，并打破英超最高得分及最多进球等多项纪录。" as AnyObject,
+        "soulImage":"soul_manc" as AnyObject,
+        "soulMsg":"瓜迪奥拉\n“不管是赢球还是输球，我都会坚持我所信仰的踢法”" as AnyObject,
+        "playerDatas" : [
+            ["name":"埃德森","image":"manc_p_31_ederson","position":"守门员","number":"31", "url":"http://cn.mancity.com/teams/profile/ederson-moraes"],
+            ["name":"萨内","image":"manc_p_19_Sane","position":"左边前位","number":"19", "url":"http://cn.mancity.com/teams/profile/leroy-sane"],
+            ["name":"贝尔纳多·席尔瓦","image":"manc_p_20_BSilver","position":"进攻中场","number":"20", "url":"http://cn.mancity.com/teams/profile/bernardo-silva"]
+        ] as AnyObject
+    ]
     var playerDatas = [Dictionary<String, String>]()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,11 +60,12 @@ class TeamDetailViewController: UIViewController {
     }
     
     func setupTable(yPos:CGFloat){
-        playerDatas = [
-            ["name":"埃德森","image":"manc_p_31_ederson","position":"守门员","number":"31"],
-            ["name":"萨内","image":"manc_p_19_Sane","position":"左边前位","number":"19"],
-            ["name":"贝尔纳多·席尔瓦","image":"manc_p_20_BSilver","position":"进攻中场","number":"20"]
-        ]
+//        playerDatas = [
+//            ["name":"埃德森","image":"manc_p_31_ederson","position":"守门员","number":"31", "url":"http://cn.mancity.com/teams/profile/ederson-moraes"],
+//            ["name":"萨内","image":"manc_p_19_Sane","position":"左边前位","number":"19", "url":"http://cn.mancity.com/teams/profile/leroy-sane"],
+//            ["name":"贝尔纳多·席尔瓦","image":"manc_p_20_BSilver","position":"进攻中场","number":"20", "url":"http://cn.mancity.com/teams/profile/bernardo-silva"]
+//        ]
+        playerDatas = teamDatas["playerDatas"] as! [Dictionary<String, String>]
         playerTableView = UITableView(frame: CGRect(x: PADDING, y: yPos, width: INSET_WIDTH, height: 0), style: .plain)
         playerTableView.isScrollEnabled = false
         //设置 table's row height : 必须同时设置 rowHeight 及 estimatedRowHeigth(预估高度，决定 UITableView's ContentSize)
@@ -73,7 +86,7 @@ class TeamDetailViewController: UIViewController {
     func setupBanner() -> CGFloat{
         let bannerImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: stage.width, height: stage.width*RATIO_BANNER))
         bannerImageView.contentMode = .scaleAspectFill
-        bannerImageView.image = UIImage(named: "banner_manc")
+        bannerImageView.image = UIImage(named: teamDatas["bannerImage"] as! String)
         pageUIScrollView.addSubview(bannerImageView)
         return getUIItemPosY(uiItem: bannerImageView)
     }
@@ -82,14 +95,14 @@ class TeamDetailViewController: UIViewController {
         let headerView = UIView(frame: CGRect(x: PADDING, y: yPos, width: INSET_WIDTH, height: 100))
         let logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         logoImageView.contentMode = .scaleAspectFit
-        logoImageView.image = UIImage(named: "logo_manc")
+        logoImageView.image = UIImage(named: teamDatas["logoImage"] as! String)
         //
         let teamTitleLabel = UIPaddingLabel(withInsets: 0, 0, 0, 0)
         teamTitleLabel.frame = CGRect(x: 120, y: 0, width: INSET_WIDTH-120, height: 100)
         teamTitleLabel.textAlignment = .left
         teamTitleLabel.textColor = UIColor.white
         teamTitleLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-        teamTitleLabel.text = "Manchester City"
+        teamTitleLabel.text = teamDatas["name"] as? String
         //
         headerView.addSubview(teamTitleLabel)
         headerView.addSubview(logoImageView)
@@ -106,8 +119,7 @@ class TeamDetailViewController: UIViewController {
         introTitleLabel.text = "球队简介"
         pageUIScrollView.addSubview(introTitleLabel)
         //计算：UILabel 包含文字内容后的 Height
-        let strText:String = "曼彻斯特城足球俱乐部是一间位于曼彻斯特的足球俱乐部，前身为成立于1880年的“圣马可的西戈登”的足球队，1894年改名为“曼城”，目前于英格兰超级联赛比赛。球队主场为阿提哈德球场。\n\n2011/12赛季，曼城拿得英超赛冠奖，时隔44年终于重新获得英格兰顶级联赛冠军，2013/14赛季时隔一年后再度重夺英格兰顶级联赛冠军及联赛杯冠军成为“双冠王”。2017/18年度赛季，曼城第三次夺得英超冠军，并打破英超最高得分及最多进球等多项纪录。"
-//        let strText:String = "曼彻斯特城足球俱乐部是一间位于曼彻斯特的足球俱乐部，前身为成立于1880年的“圣马可的西戈登”的足球队，1894年改名为“曼城”，目前于英格兰超级联赛比赛。"
+        let strText:String = teamDatas["intro"] as! String
         let introDetailLabel = UIMultiLineLabel(text: strText, font: UIFont.systemFont(ofSize: 16), lineSpacing: 8.0, frame: CGRect(x: PADDING, y: yPos+BLOCK_MARGIN, width: INSET_WIDTH, height: 0))
         introDetailLabel.textColor = UIColor.white
         pageUIScrollView.addSubview(introDetailLabel)
@@ -121,11 +133,11 @@ class TeamDetailViewController: UIViewController {
         //
         let soulImageView = UIImageView(frame: CGRect(x: 15, y: 10, width: 80, height: 80))
         soulImageView.contentMode = .scaleAspectFill
-        soulImageView.image = UIImage(named: "soul_manc")
+        soulImageView.image = UIImage(named: teamDatas["soulImage"] as! String)
         soulImageView.makeRounded()
         soulVIew.addSubview(soulImageView)
         //
-        let strText:String = "瓜迪奥拉\n“不管是赢球还是输球，我都会坚持我所信仰的踢法”"
+        let strText:String = teamDatas["soulMsg"] as! String
         let soulLabel = UIMultiLineLabel(text: strText, font: UIFont.systemFont(ofSize: 18), lineSpacing: 6.0, frame: CGRect(x: (15+80+15), y: 10, width: (INSET_WIDTH-15-15-80-15), height: 80))
         soulLabel.textColor = UIColor.white
         soulVIew.addSubview(soulLabel)
@@ -146,9 +158,11 @@ class TeamDetailViewController: UIViewController {
         //Set : UITableView Full Height
         playerTableView.frame.size = playerTableView.contentSize
         //Set : UIScrollView Full Height
-        pageUIScrollView.contentSize = getUIScrollViewContentSize()
+        let fixedContenSize:CGSize!
+        fixedContenSize = getUIScrollViewContentSize()
+        fixedContenSize.height = fixedContenSize.height + BLOCK_MARGIN
+        pageUIScrollView.contentSize = fixedContenSize
     }
-    
     
     func setupPageCommon(){
         self.view.backgroundColor = UtilTools.hexStringToUIColor(hex: "#6caee0")
@@ -225,8 +239,10 @@ extension TeamDetailViewController : UITableViewDelegate {
     //协议：点选 cell 后执行的动作
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("click\(indexPath.row)")
+        print("click:\(indexPath.row)")
         let playerDetailViewController = PlayerDetailViewController()
+        let itemData:Dictionary<String, String> = playerDatas[indexPath.row]
+        playerDetailViewController.playerUrl = itemData["url"]!
         self.navigationController?.pushViewController(playerDetailViewController, animated: true)
     }
 }

@@ -26,6 +26,10 @@
 		8658244521B905250086670E /* UserMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8658244421B905250086670E /* UserMainViewController.swift */; };
 		8658244721B9156D0086670E /* TeamDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8658244621B9156D0086670E /* TeamDetailViewController.swift */; };
 		8658244921B91F3A0086670E /* PlayerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8658244821B91F3A0086670E /* PlayerDetailViewController.swift */; };
+		86A22DD121C8D94000B0B5C9 /* ProjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A22DD021C8D94000B0B5C9 /* ProjectData.swift */; };
+		86A22DD321C8DE9C00B0B5C9 /* FullScreenWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A22DD221C8DE9C00B0B5C9 /* FullScreenWebView.swift */; };
+		86A22DD521C9D61900B0B5C9 /* CityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A22DD421C9D61900B0B5C9 /* CityCollectionViewCell.swift */; };
+		86EBFF0621C7908E005C8871 /* TeamCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EBFF0521C7908E005C8871 /* TeamCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +54,10 @@
 		8658244421B905250086670E /* UserMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMainViewController.swift; sourceTree = "<group>"; };
 		8658244621B9156D0086670E /* TeamDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailViewController.swift; sourceTree = "<group>"; };
 		8658244821B91F3A0086670E /* PlayerDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailViewController.swift; sourceTree = "<group>"; };
+		86A22DD021C8D94000B0B5C9 /* ProjectData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectData.swift; sourceTree = "<group>"; };
+		86A22DD221C8DE9C00B0B5C9 /* FullScreenWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenWebView.swift; sourceTree = "<group>"; };
+		86A22DD421C9D61900B0B5C9 /* CityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCollectionViewCell.swift; sourceTree = "<group>"; };
+		86EBFF0521C7908E005C8871 /* TeamCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +85,7 @@
 			children = (
 				862EC77A21BE3F8400D47965 /* ButtonWithImageAndTitleExtension.swift */,
 				862EC80621C1EDEB00D47965 /* ImageViewWithRound.swift */,
+				86A22DD221C8DE9C00B0B5C9 /* FullScreenWebView.swift */,
 			);
 			path = extentions;
 			sourceTree = "<group>";
@@ -114,11 +123,13 @@
 			isa = PBXGroup;
 			children = (
 				8658242E21B8FC950086670E /* AppDelegate.swift */,
+				8658243021B8FC950086670E /* ViewController.swift */,
+				86A22DD421C9D61900B0B5C9 /* CityCollectionViewCell.swift */,
+				8658244021B904AD0086670E /* TeamMainViewController.swift */,
+				86EBFF0521C7908E005C8871 /* TeamCollectionViewCell.swift */,
 				8658244821B91F3A0086670E /* PlayerDetailViewController.swift */,
 				8658244621B9156D0086670E /* TeamDetailViewController.swift */,
 				862EC80A21C33ECD00D47965 /* PlayerTableViewCell.swift */,
-				8658243021B8FC950086670E /* ViewController.swift */,
-				8658244021B904AD0086670E /* TeamMainViewController.swift */,
 				8658244221B905130086670E /* CityMainViewController.swift */,
 				8658244421B905250086670E /* UserMainViewController.swift */,
 				8658243521B8FC950086670E /* Assets.xcassets */,
@@ -126,8 +137,17 @@
 				862F3BD021BA54400062F761 /* uikit-core */,
 				862F3BCF21BA538B0062F761 /* extentions */,
 				8658243A21B8FC950086670E /* Info.plist */,
+				86A22DCF21C8D8F900B0B5C9 /* model */,
 			);
 			path = PremierLeague;
+			sourceTree = "<group>";
+		};
+		86A22DCF21C8D8F900B0B5C9 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				86A22DD021C8D94000B0B5C9 /* ProjectData.swift */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,9 +220,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				862EC7FC21BF689B00D47965 /* ImageVIewExtension.swift in Sources */,
+				86A22DD321C8DE9C00B0B5C9 /* FullScreenWebView.swift in Sources */,
 				862EC77B21BE3F8400D47965 /* ButtonWithImageAndTitleExtension.swift in Sources */,
 				8658243121B8FC950086670E /* ViewController.swift in Sources */,
 				8658244521B905250086670E /* UserMainViewController.swift in Sources */,
+				86EBFF0621C7908E005C8871 /* TeamCollectionViewCell.swift in Sources */,
 				8658244921B91F3A0086670E /* PlayerDetailViewController.swift in Sources */,
 				862EC80721C1EDEB00D47965 /* ImageViewWithRound.swift in Sources */,
 				862EC80B21C33ECD00D47965 /* PlayerTableViewCell.swift in Sources */,
@@ -212,9 +234,11 @@
 				8658242F21B8FC950086670E /* AppDelegate.swift in Sources */,
 				862EC7FF21BF68BC00D47965 /* SliderGalleryController.swift in Sources */,
 				862F3BD221BA549F0062F761 /* UIPaddingLabel.swift in Sources */,
+				86A22DD521C9D61900B0B5C9 /* CityCollectionViewCell.swift in Sources */,
 				862EC80921C1F7B700D47965 /* UIIconLabel.swift in Sources */,
 				8658244721B9156D0086670E /* TeamDetailViewController.swift in Sources */,
 				862EC80321C09D6F00D47965 /* UtilTools.swift in Sources */,
+				86A22DD121C8D94000B0B5C9 /* ProjectData.swift in Sources */,
 				8658244321B905130086670E /* CityMainViewController.swift in Sources */,
 				862EC7FD21BF689B00D47965 /* ImageHelper.swift in Sources */,
 			);
@@ -344,6 +368,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 84F4DU57KT;
 				INFOPLIST_FILE = PremierLeague/Info.plist;
@@ -354,6 +379,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.crosss.PremierLeague;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -364,6 +390,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 84F4DU57KT;
 				INFOPLIST_FILE = PremierLeague/Info.plist;
@@ -374,6 +401,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.crosss.PremierLeague;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

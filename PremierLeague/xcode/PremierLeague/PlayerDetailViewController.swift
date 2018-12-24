@@ -7,12 +7,16 @@ class PlayerDetailViewController: UIViewController, WKNavigationDelegate {
     //
     var myWebView : WKWebView!
     var myLoadingIndicator:UIActivityIndicatorView!
+    //PlayerUrl : get from parent viewcontroller
+    var playerUrl : String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //创建 WebView
         myWebView = WKWebView(frame: CGRect(x: 0, y: 0, width: stage.width, height: stage.height))
+        
+        //        myWebView.contentInsetAdjustmentBehavior = .never
         
         //设置代理，实行 Loading 监测
         myWebView.navigationDelegate = self
@@ -26,8 +30,8 @@ class PlayerDetailViewController: UIViewController, WKNavigationDelegate {
         self.view.addSubview(myLoadingIndicator)
         
         //读取一次网址
-        let url:String = "http://cn.mancity.com/teams/profile/leroy-sane"
-        self.go(url: url)
+//        playerUrl = "http://cn.mancity.com/teams/profile/leroy-sane"
+        self.go(url: playerUrl)
         
         setupPageCommon()
         

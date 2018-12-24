@@ -1,0 +1,6 @@
+framework module Pods_ExCocoaPods {
+  umbrella header "Pods-ExCocoaPods-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -14,8 +14,9 @@
 - ViewController.swift : 應用程式預設的主要視圖(View)控制器(Controller)，所有需要的 UI 功能(像是按鈕、文字或圖案等等)，都必須在這個 ViewController 裡面建立，通常會寫在viewDidLoad()這個方法裡面。
 - **Hint**
     - 一個 UIViewController 負責一個畫面(即呈現視圖View)的功能，如果有多個畫面時，就需要各自建立一個不同的 UIViewController。
+---
 
-##### UIView
+### UIView
 最基礎的一個元件：UIView，所有 UIKit 的元件(像是按鈕UIButton、文字UITextView等等)都是繼承自 UIView 。
 
 要將元件放進視圖View中，需要了解有三個條件：
@@ -46,8 +47,8 @@ myView.addSubview(myButton)
 
 ---
 
-##### UIScrollView 具有Scroll功能的 UIView
-當一個元件的實際視圖範圍比可見視圖範圍大時，會加上滑動條( scroll bar )讓使用者自由滑動，UIScrollView 就是有這一特性的最基本元件。實際上，前面章節介紹過的 UITextView 、 UITableView 及 UICollectionView 都是繼承自 UIScrollView ，所以他們也都繼承了 UIScrollView 的特性。
+### UIScrollView 具有Scroll功能的 UIView
+當一個元件的實際視圖範圍比可見視圖範圍大時，會加上滑動條( scroll bar )讓使用者自由滑動，UIScrollView 就是有這一特性的最基本元件。實際上，前面章節介紹過的 ==UITextView 、 UITableView 及 UICollectionView 都是繼承自 UIScrollView== ，所以他們也都繼承了 UIScrollView 的特性。
 
 ###### Example : UIScrollView , 关键是设置 contentSize 的 width 及 height
 ```
@@ -194,6 +195,8 @@ override func viewDidLoad() {
 ### UITableView
 UITableView 常用的列表元件，每一個儲存格稱作一個 cell ，每個 cell 除了可以顯示文字外，還可以放置多個不同的元件。
 
+继承：UITableView 继承自 UIScrollView。
+
 ###### Example
 
 ```
@@ -297,6 +300,127 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 ```
 
 ---
+
+### UICollectionView 
+UICollectionView 可以用來表現网格排列这种多行多列元件的样式。
+
+**继承**：UITableView 继承自 UIScrollView。
+
+**创建步骤：**
+1. 定义呈现的样式 ：layout = UICollectionViewFlowLayout()
+2. 创建 UICollectionView 实例 ：UICollectionView (frame: CGRect(), collectionViewLayout: layout)
+3. UICollectionView 注册 cell ，以及设置代理
+4. 拓展 ViewController : UICollectionViewDataSource , UICollectionViewDelegate。编写 cell 协议方法
+
+***ViewController***
+```
+import UIKit
+
+class TeamMainViewController: UIViewController {
+    let stage:CGRect = UIScreen.main.bounds
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupCollectionView()
+    }
+    
+    func setupCollectionView(){
+        //定义呈现的样式
+        let layout = UICollectionViewFlowLayout()
+        let ratio:CGFloat = 12
+        //设置每一个 cell 与其他 cell 的间距
+        layout.sectionInset = UIEdgeInsets(top: ratio, left: ratio, bottom: ratio, right: ratio)
+        layout.minimumLineSpacing = ratio*2
+        //设置 scrollDirection 滚动方向，如果横向滚动，还需要设置 UICollectionView 的 Height, 必须与 layout.itemSize 同高 
+        layout.scrollDirection = .vertical  //.horizontal
+        //设置 cell size
+        layout.itemSize = CGSize(width: CGFloat(stage.width*0.5-ratio*2), height: CGFloat(stage.width*0.5-ratio*2))
+        
+        //创建 UICollectionView 实例
+        let myCollectionView = UICollectionView(frame: CGRect(x:0, y: 0, width: stage.width, height: stage.height-120), collectionViewLayout: layout)
+        //Set UICollectionView Background-Color
+        myCollectionView.backgroundColor = UtilTools.hexStringToUIColor(hex: "#F7F8FA")
+        //Set Shows VerticalScrollIndicator
+        myCollectionView.showsVerticalScrollIndicator = true
+        //注册 cell 已供后续使用
+        myCollectionView.register(TeamCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        
+        //设置代理
+        myCollectionView.delegate = self
+        myCollectionView.dataSource = self
+       
+        //
+        self.view.addSubview(myCollectionView)
+    }
+}
+
+extension TeamMainViewController : UICollectionViewDataSource{
+    //每一个 section 内 cell 的个数
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return teamDatas.count
+    }
+    
+    //每个 cell 要显示的内容
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"Cell", for: indexPath) as! TeamCollectionViewCell
+        cell.titleLabel.text = "Cell"
+        return cell
+    }
+}
+
+extension TeamMainViewController : UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        print("click:\(indexPath.row)")
+    }
+    
+}
+
+```
+
+***UICollectionViewCell***
+
+```
+import UIKit
+
+class TeamCollectionViewCell: UICollectionViewCell {
+    var titleLabel:UILabel!
+    var gridUIView:UIView!
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        let w:CGFloat = UIScreen.main.bounds.size.width
+        // create : UIView
+        let ratio:CGFloat = 12.0
+        // Set Cell-Size
+        let gridWidth = w*0.5 - ratio*2
+        gridUIView = UIView(frame:CGRect(x:0, y:0, width:gridWidth, height:gridWidth))
+        self.addSubview(gridUIView)
+        
+        // create UILabel
+        titleLabel = UILabel(frame:CGRect(x: 0, y: 0, width: gridUIView.frame.size.width, height: 20))
+        gridUIView.addSubview(titleLabel)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    func setValueToCell(item: Dictionary<String, String>){
+        titleLabel.text = item["name"]
+    }
+}
+
+```
+
+
+
+
+##### 进阶
+###### Drag End Cell 缓动定位 : CollectionViewWithPaging-simplerExample-master
+https://medium.com/@shaibalassiano/tutorial-horizontal-uicollectionview-with-paging-9421b479ee94
+
+---
 ### 手动创建页面
 
 **第一步**: 先以刪除檔案的方式將 Storyboard 刪除，也就是下圖中列表的這隻檔案 Main.storyboard ：
@@ -386,9 +510,176 @@ viewControllerB.selectedName = "Taylor Swift"
 navigationController?.pushViewController(viewControllerB, animated: true)
 ```
 
+##### 导航栏背景颜色及字体颜色或图片设置
+
+```
+// image : 输入 Image Literal , 点击图标，选择 Assets 库里的素材即可
+let titleImageView = UIImageView(image: #imageLiteral(resourceName: "title_icon"))
+titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+titleImageView.contentMode = .scaleAspectFit
+navigationItem.titleView = titleImageView
+// 背景颜色
+self.navigationController?.navigationBar.barTintColor = UtilTools.hexStringToUIColor(hex: "#38003C")
+// 字体颜色
+let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+navigationController?.navigationBar.titleTextAttributes = textAttributes
+//
+self.navigationController?.navigationBar.isTranslucent = false
+```
 
 
 ##### 导航栏进阶，参考
 - 导航栏显示和隐藏的坑 ：https://www.jianshu.com/p/60e2369bbe0e
 - https://stackoverflow.com/questions/29209453/how-to-hide-a-navigation-bar-from-first-viewcontroller-in-swift
 
+---
+
+### UITabBarController - 标签导航栏
+也是一个导航容器，可以用來放置多個頁面，將可以前往的頁面以標籤列的方式列出。
+
+這個範例的目標如下，有四個頁面可供切換，皆列在標籤列中：
+![image](678E2F5278214E9790EC1D4310FD2961)
+
+UITabBarController 本身并不会显示任何视图，如果要显示视图则必须设置其 viewControllers 属性（它默认显示 viewControllers[0]）。这个属性是一个数组，它维护了所有 UITabBarController 的子控制器。
+
+为了尽可能减少视图之间的耦合，所有的 UITabBarController 的子控制器的相关标题、图标等信息均由子控制器自己控制，UITabBarController 仅仅作为一个容器存在。
+
+#### UITabBarController 生命周期
+1. 把子控制器都添加给 TabBarController 管理，当程序启动时它只会加载第一个添加的控制器的view。
+2. 切换到第二个界面。先把第一个界面的view移开，再把新的view添加上去，但是第一个view只是被移开没有被销毁。
+3. 重新切换到第一个界面，第一个的控制器直接 viewWillAppear，==不会再执行 viewDidLoad 方法。==。第二个界面中的 view 移除后并没有被销毁（因为它的控制器还存在，有一个强引用引用着它）
+4. ==UINavigationController 通过栈来管理视图(之前的View会被销毁)，UITabBarController 通过数组来管理视图控(之前的View不会被销毁)。==
+
+###### Example : 最简单的例子，ExUITabBarController
+```
+//  AppDelegate.swift
+
+import UIKit
+
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.backgroundColor = UIColor.white
+        
+        // 创建 UITabBarController - 标签导航栏视图控制器，UITabBarController 本身并不会显示任何 View, 如果要显示 View 必须设置其内的各自View 属性
+        let myTabBar = UITabBarController()
+        
+        // 设置标签列
+        // 使用 UITabBarController's tabBar 各个属性进行样式设置（背景图片、背景颜色、系统图标颜色等）
+        myTabBar.tabBar.backgroundColor = UIColor.clear
+        
+        
+        // 创建页面，使用系统自带样式
+        // 所有的 UITabController 的子控制器的相关标题、图标等信息均由子控制器设置，例如：子控制器使用 tabBarItem 属性设置标题与图标
+        let mainViewController = MainViewController()
+        mainViewController.tabBarItem = UITabBarItem(tabBarSystemItem:.favorites, tag: 0)
+        
+        // 创建页面，使用自定义图片样式，有预设图片
+        let articleViewController = ArticleViewController()
+        articleViewController.tabBarItem = UITabBarItem(title: "文章", image: UIImage(named: "file"), tag: 1)
+        
+        let introViewController = IntroViewController()
+        introViewController.tabBarItem = UITabBarItem(title: "介绍", image: UIImage(named: "profile"), tag: 2)
+        
+        let settingViewController = SettingViewController()
+        settingViewController.tabBarItem.image = UIImage(named: "settings")
+        settingViewController.tabBarItem.title = "设定"
+        settingViewController.tabBarItem.tag = 3
+        
+        //子控制器加入到 UITabBarController
+        myTabBar.viewControllers = [
+            mainViewController,
+            articleViewController,
+            introViewController,
+            settingViewController
+        ]
+        
+        //预设开启的页面
+        myTabBar.selectedIndex = 0
+        
+        //设置根视图控制器
+        self.window?.rootViewController = myTabBar
+        self.window?.makeKeyAndVisible()
+        
+        //
+        return true
+    }
+}
+
+```
+
+**Hint**
+- tarBarItem 图片大小，建议:3@-75X75
+- https://www.flaticon.com/
+
+
+#### 进阶，参考
+- iOS常用UI控件-UITabBarController使用 ：https://www.jianshu.com/p/b934e6c52918
+- 自定义 UITabBar 总结（一个模拟 instagram TabBar 的例子）：https://segmentfault.com/a/1190000004832987
+
+
+---
+### UIWebview - 内置浏览器
+APP 中如果需要載入一些外部網站時，可以使用 UIWebView。 
+
+```
+import UIKit
+import WebKit
+
+class PlayerDetailViewController: UIViewController, WKNavigationDelegate {
+
+    let stage:CGRect = UIScreen.main.bounds
+    //
+    var myWebView : WKWebView!
+    var myLoadingIndicator:UIActivityIndicatorView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //创建 WebView
+        myWebView = WKWebView(frame: CGRect(x: 0, y: 0, width: stage.width, height: stage.height))
+        
+        //设置代理，进行 Loading 监测
+        myWebView.navigationDelegate = self
+        //
+        self.view.addSubview(myWebView)
+        
+        //创建环状进度条
+        myLoadingIndicator = UIActivityIndicatorView(style: .gray)
+        myLoadingIndicator.center = CGPoint(x: stage.width*0.5, y: stage.height*0.5)
+        self.view.addSubview(myLoadingIndicator)
+        
+        //读取网址
+        let url:String = "http://cn.mancity.com/teams/profile/leroy-sane"
+        self.go(url: url)
+    }
+    
+    func go(url:String){
+        let urlTarget = URL(string: url)
+        let urlRequest = URLRequest(url: urlTarget!)
+        myWebView.load(urlRequest)
+    }
+    
+    // 读取网址开始，显示进度条
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        myLoadingIndicator.startAnimating()
+    }
+    
+    //读取网址完毕，隐藏进度条
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        myLoadingIndicator.stopAnimating()
+    }
+}
+
+```
+
+---
+
+### UIViewController的生命周期
+
+https://juejin.im/post/5a706cf05188257323357286
+
+-整个控制器声明周期：  viewDidLoad -> viewWillAppear -> viewWillLayoutSubviews -> viewDidLayoutSubviews ->  viewDidAppear -> viewWillDisappear -> viewDidDisappear
